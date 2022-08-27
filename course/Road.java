@@ -75,11 +75,11 @@ public class Road {
             return false;
         } else return !lastRoad.direction.equals(Direction.LEFT) || !direction.equals(Direction.RIGHT);
     }
-    public void addCar(Car car){
+    void addCar(Car car){
         this.cars.add(car);
         hasCar = true;
     }
-    public void removeCar(Car car){
+    void removeCar(Car car){
         this.cars.remove(cars.indexOf(car));
         hasCar = false;
     }
@@ -132,7 +132,7 @@ public class Road {
     public void setNextRoads(ArrayList<Road> nextRoads) {
         this.nextRoads = nextRoads;
         for (int i = 0; i < nextRoads.size(); i++) {
-            this.nextRoads.get(i).hasCar = true;
+            this.nextRoads.get(i).hasCrossRoads = true;
             this.nextRoads.get(i).lastRoad = this;
         }
     }

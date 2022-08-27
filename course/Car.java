@@ -35,7 +35,7 @@ public class Car  implements Observer{
         this.isLigtIsGreen = isLigtIsGreen;
     }
 
-    public void carMooving() {
+    private void carMooving() {
          if (!currentRoad.isHasCar()) {
             currentRoad.addCar(this);
             if (!isLigtIsGreen && currentRoad.isCrossRoads() && passingRoadTime == 0) {
