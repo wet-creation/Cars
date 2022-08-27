@@ -38,7 +38,7 @@ public class Car  implements Observer{
     public void carMooving() {
          if (!currentRoad.isHasCar()) {
             currentRoad.addCar(this);
-            if (!isLigtIsGreen && currentRoad.isCrossRoads()) {
+            if (!isLigtIsGreen && currentRoad.isCrossRoads() && passingRoadTime == 0) {
                 timeWhenCarDontMove += 1;
                 System.out.println("Машина с названием " + this.name + " стоит на дороге " + currentRoad.getName());
             } else {
@@ -59,15 +59,16 @@ public class Car  implements Observer{
         } else {
             if (!currentRoad.getCars().contains(this))
                 currentRoad.addCar(this);
-            if (!isLigtIsGreen && currentRoad.isCrossRoads()) {
+            if (!isLigtIsGreen && currentRoad.isCrossRoads() && passingRoadTime == 0) {
                 timeWhenCarDontMove += 1;
                 System.out.println("Машина с названием " + this.name + " стоит на дороге " + currentRoad.getName());
             } else {
                 if (currentRoad.getCars().size() > 1 && currentRoad.getCars().indexOf(this) != 0) {
                     Car anotherCar = currentRoad.getCars().get(currentRoad.getCars().indexOf(this) - 1);
                     if (currentRoad.getCars().get(currentRoad.getCars().indexOf(this)).SPEED > currentRoad.getCars().get(currentRoad.getCars().indexOf(anotherCar)).SPEED) {
-                        if (passingRoadTime + SPEED >= anotherCar.passingRoadTime + anotherCar.SPEED) {
+                        if (passingRoadTime + SPEED >= anotherCar.passingRoadTime + anotherCar.SPEED || (anotherCar.passingRoadTime + anotherCar.SPEED) >= currentRoad.getDistance() ) {
                             System.out.println("Машина " + this.name + " пытается перегнать " + anotherCar.name);
+
                             if (anotherCar.SPEED < SPEED - anotherCar.SPEED) {
                                 passingRoadTime += passingRoadTime + SPEED - (anotherCar.passingRoadTime + anotherCar.SPEED) - 1;
                                 if (passingRoadTime > anotherCar.passingRoadTime + anotherCar.SPEED)
@@ -75,6 +76,8 @@ public class Car  implements Observer{
                             }
                             else
                                 passingRoadTime += passingRoadTime + SPEED - anotherCar.passingRoadTime - 1;
+                            if (passingRoadTime > anotherCar.passingRoadTime + anotherCar.SPEED)
+                                passingRoadTime -= anotherCar.passingRoadTime + anotherCar.SPEED;
                         } else
                             passingRoadTime += SPEED;
                     } else {
@@ -116,8 +119,8 @@ public class Car  implements Observer{
                     }
                     catch (InterruptedException ex) {
                     }
-                 //   if (currentTimeMillis + timeOfExecutingInSeconds * 1000 <= System.currentTimeMillis())
-                  //      Thread.currentThread().stop();
+                  if (currentTimeMillis + timeOfExecutingInSeconds * 1000 <= System.currentTimeMillis())
+                      Thread.currentThread().stop();
                 }
             }
         });
