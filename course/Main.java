@@ -27,8 +27,8 @@ public class Main {
         CrossRoads crossRoads = new CrossRoads(1000);
 
 
-        Car car1 = new Car(5, r1, crossRoads,"car1");
-        Car car2 = new Car(8, r5, crossRoads,"car2");
+        Car car1 = new Car(2, r1, crossRoads,"car1");
+        Car car2 = new Car(10, r7, crossRoads,"car2");
         Car car3 = new Car(3, r7, crossRoads,"car3");
         Car car4 = new Car(7, r2, crossRoads,"car4");
         Car car5 = new Car(10, r3, crossRoads,"car5");
@@ -38,9 +38,9 @@ public class Main {
         crossRoads.startChangingColor(time);
         car1.startCarMooving(time);
         car2.startCarMooving(time);
-        car3.startCarMooving(time);
-        car4.startCarMooving(time);
-        car5.startCarMooving(time);
+//        car3.startCarMooving(time);
+//        car4.startCarMooving(time);
+//        car5.startCarMooving(time);
         long currentTimeMillis = System.currentTimeMillis();
         while (currentTimeMillis + time * 1000 >= System.currentTimeMillis() )
             if (currentTimeMillis + time * 1000 <= System.currentTimeMillis())
@@ -50,9 +50,9 @@ public class Main {
                 ));
         System.out.println("Time of waiting for car " + car1.getName() + " is " + car1.getTimeWhenCarDontMove());
         System.out.println("Time of waiting for car " + car2.getName() + " is " + car2.getTimeWhenCarDontMove());
-        System.out.println("Time of waiting for car " + car3.getName() + " is " + car3.getTimeWhenCarDontMove());
-        System.out.println("Time of waiting for car " + car4.getName() + " is " + car4.getTimeWhenCarDontMove());
-        System.out.println("Time of waiting for car " + car5.getName() + " is " + car5.getTimeWhenCarDontMove());
+//        System.out.println("Time of waiting for car " + car3.getName() + " is " + car3.getTimeWhenCarDontMove());
+//        System.out.println("Time of waiting for car " + car4.getName() + " is " + car4.getTimeWhenCarDontMove());
+//        System.out.println("Time of waiting for car " + car5.getName() + " is " + car5.getTimeWhenCarDontMove());
 
 
     }

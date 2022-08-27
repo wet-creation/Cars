@@ -105,7 +105,7 @@ public class Road {
     }
 
     public boolean isHasCar() {
-        return !cars.isEmpty() && cars.size() != 1;
+        return !cars.isEmpty();
     }
 
     public int getDistance() {

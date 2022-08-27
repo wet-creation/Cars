@@ -36,8 +36,8 @@ public class Car  implements Observer{
     }
 
     public void carMooving() {
-      //  currentRoad.addCar(this);
-        if (!currentRoad.isHasCar()) {
+         if (!currentRoad.isHasCar()) {
+            currentRoad.addCar(this);
             if (!isLigtIsGreen && currentRoad.isCrossRoads()) {
                 timeWhenCarDontMove += 1;
                 System.out.println("Машина с названием " + this.name + " стоит на дороге " + currentRoad.getName());
@@ -46,6 +46,7 @@ public class Car  implements Observer{
                 System.out.println("Машина с названием " + this.name + " едет по дороге " + currentRoad.getName());
                 if (passingRoadTime >= currentRoad.getDistance()) {
                     System.out.println("Машина с названием " + this.name + " проехала дорогу " + currentRoad.getName());
+                    currentRoad.removeCar(this);
                     if (currentRoad.isNextRoadsOrRoad())
                         currentRoad = currentRoad.getNextRoads().get((int) (Math.random() * currentRoad.getNextRoads().size()));
 
@@ -55,16 +56,38 @@ public class Car  implements Observer{
 
                 }
             }
-        }
-        else {
+        } else {
+            if (!currentRoad.getCars().contains(this))
+                currentRoad.addCar(this);
             if (!isLigtIsGreen && currentRoad.isCrossRoads()) {
                 timeWhenCarDontMove += 1;
                 System.out.println("Машина с названием " + this.name + " стоит на дороге " + currentRoad.getName());
             } else {
-                passingRoadTime += SPEED;
+                if (currentRoad.getCars().size() > 1 && currentRoad.getCars().indexOf(this) != 0) {
+                    Car anotherCar = currentRoad.getCars().get(currentRoad.getCars().indexOf(this) - 1);
+                    if (currentRoad.getCars().get(currentRoad.getCars().indexOf(this)).SPEED > currentRoad.getCars().get(currentRoad.getCars().indexOf(anotherCar)).SPEED) {
+                        if (passingRoadTime + SPEED >= anotherCar.passingRoadTime + anotherCar.SPEED) {
+                            System.out.println("Машина " + this.name + " пытается перегнать " + anotherCar.name);
+                            if (anotherCar.SPEED < SPEED - anotherCar.SPEED) {
+                                passingRoadTime += passingRoadTime + SPEED - (anotherCar.passingRoadTime + anotherCar.SPEED) - 1;
+                                if (passingRoadTime > anotherCar.passingRoadTime + anotherCar.SPEED)
+                                    passingRoadTime -= anotherCar.passingRoadTime + anotherCar.SPEED;
+                            }
+                            else
+                                passingRoadTime += passingRoadTime + SPEED - anotherCar.passingRoadTime - 1;
+                        } else
+                            passingRoadTime += SPEED;
+                    } else {
+                        passingRoadTime += SPEED;
+                    }
+                }
+                else {
+                    passingRoadTime += SPEED;
+                }
                 System.out.println("Машина с названием " + this.name + " едет по дороге " + currentRoad.getName());
                 if (passingRoadTime >= currentRoad.getDistance()) {
                     System.out.println("Машина с названием " + this.name + " проехала дорогу " + currentRoad.getName());
+                    currentRoad.removeCar(this);
                     if (currentRoad.isNextRoadsOrRoad())
                         currentRoad = currentRoad.getNextRoads().get((int) (Math.random() * currentRoad.getNextRoads().size()));
 
@@ -73,6 +96,7 @@ public class Car  implements Observer{
                     passingRoadTime = 0;
 
                 }
+
             }
         }
     }
@@ -92,8 +116,8 @@ public class Car  implements Observer{
                     }
                     catch (InterruptedException ex) {
                     }
-                    if (currentTimeMillis + timeOfExecutingInSeconds * 1000 <= System.currentTimeMillis())
-                        Thread.currentThread().stop();
+                 //   if (currentTimeMillis + timeOfExecutingInSeconds * 1000 <= System.currentTimeMillis())
+                  //      Thread.currentThread().stop();
                 }
             }
         });
