@@ -6,36 +6,39 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-
+        Road r1 = new Road(40, Road.Direction.RIGHT, "r1");
         Road r2 = new Road(30, Road.Direction.RIGHT, "r2");
-
-        Road r4 = new Road(20, Road.Direction.DOWN, r2, "r4");
-
+        Road r3 = new Road(40, Road.Direction.DOWN, "r3");
+        Road r4 = new Road(20, Road.Direction.DOWN, "r4");
+        Road r5 = new Road(20, Road.Direction.LEFT,  "r5");
         Road r6 = new Road(20, Road.Direction.LEFT, "r6");
-
-        ArrayList<Road> crossroad2 = new ArrayList<>();
-        crossroad2.add(r6);
-        Road r5 = new Road(20, Road.Direction.LEFT, crossroad2, "r5");
-        Road r3 = new Road(40, Road.Direction.DOWN, crossroad2, "r3");
-        ArrayList<Road> crossroad1 = new ArrayList<>();
-        crossroad1.add(r2);
-        crossroad1.add(r3);
-        Road r1 = new Road(40, Road.Direction.RIGHT, crossroad1, "r1");
-        Road r7 = new Road(20, Road.Direction.UP, r6, r1, "r7");
+        Road r7 = new Road(20, Road.Direction.UP, "r7");
+        CrossRoad crossRoad1 = new CrossRoad("cross1");
+        CrossRoad crossRoad2 = new CrossRoad("cross2");
+        r1.setNextRoad(crossRoad1);
+        crossRoad1.setNextRoads(r3);
+        crossRoad1.setNextRoads(r2);
+        r2.setNextRoad(r4);
         r4.setNextRoad(r5);
+        r5.setNextRoad(crossRoad2);
+        r3.setNextRoad(crossRoad2);
+        crossRoad2.setNextRoads(r6);
+        r6.setNextRoad(r7);
+        r7.setNextRoad(r1);
 
-        CrossRoads crossRoads = new CrossRoads(1000);
+
+        TrafficLight trafficLight = new TrafficLight(1000);
 
 
-        Car car1 = new Car(6, r1, crossRoads,"car1");
-        Car car2 = new Car(4, r7, crossRoads,"car2");
-        Car car3 = new Car(6, r6, crossRoads,"car3");
-        Car car4 = new Car(7, r2, crossRoads,"car4");
-        Car car5 = new Car(2, r4, crossRoads,"car5");
+        Car car1 = new Car(6, r7, trafficLight,"car1");
+        Car car2 = new Car(4, r7, trafficLight,"car2");
+        Car car3 = new Car(6, r6, trafficLight,"car3");
+        Car car4 = new Car(7, r2, trafficLight,"car4");
+        Car car5 = new Car(2, r4, trafficLight,"car5");
 
         long time = 50;
 
-       crossRoads.startChangingColor(time);
+        trafficLight.startChangingColor(time);
        car1.startCarMooving(time);
        car2.startCarMooving(time);
        car3.startCarMooving(time);

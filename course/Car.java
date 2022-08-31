@@ -6,11 +6,11 @@ public class Car  implements Observer{
     private int passingRoadTime = 0;
 
     private  boolean isLigtIsGreen = true;
-    private Road currentRoad;
+    private AbstractRoad currentRoad;
     private final String name;
-    private Road.Direction carDirection;
+    private AbstractRoad.Direction carDirection;
 
-    public Car(int speed, Road currentRoad, Subject crossRoads, String name){
+    public Car(int speed, AbstractRoad currentRoad, Subject crossRoads, String name){
         this.SPEED = speed;
         this.currentRoad = currentRoad;
         this.name = name;
@@ -38,16 +38,19 @@ public class Car  implements Observer{
     private void carMooving() {
          if (!currentRoad.isHasCar()) {
             currentRoad.addCar(this);
-            if (!isLigtIsGreen && currentRoad.isCrossRoads() && passingRoadTime == 0) {
+            if (!isLigtIsGreen && currentRoad instanceof CrossRoad) {
                 timeWhenCarDontMove += 1;
-                System.out.println("Машина с названием " + this.name + " стоит на дороге " + currentRoad.getName());
+                System.out.println("Машина с названием " + this.name + " стоит на перекрестке " + currentRoad.getName());
             } else {
                 passingRoadTime += SPEED;
                 System.out.println("Машина с названием " + this.name + " едет по дороге " + currentRoad.getName());
                 if (passingRoadTime >= currentRoad.getDistance()) {
-                    System.out.println("Машина с названием " + this.name + " проехала дорогу " + currentRoad.getName());
+                    if (currentRoad instanceof CrossRoad)
+                        System.out.println("Машина с названием " + this.name + " проехала перекресток " + currentRoad.getName());
+                    else
+                     System.out.println("Машина с названием " + this.name + " проехала дорогу " + currentRoad.getName());
                     currentRoad.removeCar(this);
-                    if (currentRoad.isNextRoadsOrRoad())
+                    if (currentRoad instanceof CrossRoad)
                         currentRoad = currentRoad.getNextRoads().get((int) (Math.random() * currentRoad.getNextRoads().size()));
 
                     else
@@ -59,15 +62,15 @@ public class Car  implements Observer{
         } else {
             if (!currentRoad.getCars().contains(this))
                 currentRoad.addCar(this);
-            if (!isLigtIsGreen && currentRoad.isCrossRoads() && passingRoadTime == 0) {
+            if (!isLigtIsGreen && currentRoad instanceof CrossRoad) {
                 timeWhenCarDontMove += 1;
-                System.out.println("Машина с названием " + this.name + " стоит на дороге " + currentRoad.getName());
+                System.out.println("Машина с названием " + this.name + " стоит на перекрестке " + currentRoad.getName());
             } else {
                 if (currentRoad.getCars().size() > 1 && currentRoad.getCars().indexOf(this) != 0) {
                     Car anotherCar = currentRoad.getCars().get(currentRoad.getCars().indexOf(this) - 1);
                     if (currentRoad.getCars().get(currentRoad.getCars().indexOf(this)).SPEED > currentRoad.getCars().get(currentRoad.getCars().indexOf(anotherCar)).SPEED) {
                         if (passingRoadTime + SPEED >= anotherCar.passingRoadTime + anotherCar.SPEED || (anotherCar.passingRoadTime + anotherCar.SPEED) >= currentRoad.getDistance() ) {
-                            System.out.println("Машина " + this.name + " пытается перегнать " + anotherCar.name);
+                            System.out.println("Машина " + this.name + " пытается перегнать " + anotherCar.name + " на дороге " + currentRoad.name);
 
                             if (anotherCar.SPEED < SPEED - anotherCar.SPEED) {
                                 passingRoadTime += passingRoadTime + SPEED - (anotherCar.passingRoadTime + anotherCar.SPEED) - 1;
@@ -89,9 +92,12 @@ public class Car  implements Observer{
                 }
                 System.out.println("Машина с названием " + this.name + " едет по дороге " + currentRoad.getName());
                 if (passingRoadTime >= currentRoad.getDistance()) {
-                    System.out.println("Машина с названием " + this.name + " проехала дорогу " + currentRoad.getName());
+                    if (currentRoad instanceof CrossRoad)
+                        System.out.println("Машина с названием " + this.name + " проехала перекресток " + currentRoad.getName());
+                    else
+                        System.out.println("Машина с названием " + this.name + " проехала дорогу " + currentRoad.getName());
                     currentRoad.removeCar(this);
-                    if (currentRoad.isNextRoadsOrRoad())
+                    if (currentRoad instanceof CrossRoad)
                         currentRoad = currentRoad.getNextRoads().get((int) (Math.random() * currentRoad.getNextRoads().size()));
 
                     else

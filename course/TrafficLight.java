@@ -3,12 +3,12 @@ package OOP.course;
 import java.util.ArrayList;
 
 
-public class CrossRoads implements Subject{
+public class TrafficLight implements Subject{
     private final int timeToChangeColorMills;
     private boolean isColorGreen = true;
     private ArrayList<Observer> observers = new ArrayList<>();
 
-    public CrossRoads(int timeToChangeColorMills){
+    public TrafficLight(int timeToChangeColorMills){
         this.timeToChangeColorMills = timeToChangeColorMills;
     }
     public void registryObserver(Observer observer) {
