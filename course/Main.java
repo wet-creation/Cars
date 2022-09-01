@@ -26,8 +26,7 @@ public class Main {
         r6.setNextRoad(r7);
         r7.setNextRoad(r1);
 
-
-        TrafficLight trafficLight = new TrafficLight(1000);
+        TrafficLight trafficLight = TrafficLight.createOrGetTrafficLight(1000);
 
 
         Car car1 = new Car(6, r7, trafficLight,"car1");
@@ -36,7 +35,7 @@ public class Main {
         Car car4 = new Car(7, r2, trafficLight,"car4");
         Car car5 = new Car(2, r4, trafficLight,"car5");
 
-        long time = 50;
+        long time = 20;
 
         trafficLight.startChangingColor(time);
        car1.startCarMooving(time);

@@ -4,13 +4,26 @@ import java.util.ArrayList;
 
 
 public class TrafficLight implements Subject{
+    private volatile static TrafficLight trafficLight;
     private final int timeToChangeColorMills;
     private boolean isColorGreen = true;
     private ArrayList<Observer> observers = new ArrayList<>();
 
-    public TrafficLight(int timeToChangeColorMills){
+    private TrafficLight(int timeToChangeColorMills){
         this.timeToChangeColorMills = timeToChangeColorMills;
     }
+
+    public static TrafficLight createOrGetTrafficLight(int timeToChangeColorMills){
+        if (trafficLight == null) {
+            synchronized (TrafficLight.class) {
+                if (trafficLight == null) {
+                    trafficLight = new TrafficLight(timeToChangeColorMills);
+                }
+            }
+        }
+        return trafficLight;
+    }
+
     public void registryObserver(Observer observer) {
         observers.add(observer);
     }
