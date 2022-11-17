@@ -10,45 +10,29 @@ public class Car  implements Observer{
     private final String name;
     private AbstractRoad.Direction carDirection;
 
-    public Car(int speed, AbstractRoad currentRoad, Subject crossRoads, String name){
+    public Car(int speed, AbstractRoad currentRoad, Subject trafficLight, String name){
         this.SPEED = speed;
         this.currentRoad = currentRoad;
         this.name = name;
 
         carDirection = currentRoad.getDirection();
-        crossRoads.registryObserver(this);
-    }
-    public int getTimeWhenCarDontMove() {
-        return timeWhenCarDontMove;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getPassingRoadTime() {
-        return passingRoadTime;
-    }
-
-    @Override
-    public void update(boolean isLigtIsGreen) {
-        this.isLigtIsGreen = isLigtIsGreen;
+        trafficLight.registryObserver(this);
     }
 
     private void carMooving() {
-         if (!currentRoad.isHasCar()) {
+         if (!currentRoad.hasCar()) {
             currentRoad.addCar(this);
             if (!isLigtIsGreen && currentRoad instanceof CrossRoad) {
                 timeWhenCarDontMove += 1;
-                System.out.println("Машина с названием " + this.name + " стоит на перекрестке " + currentRoad.getName());
+                System.out.println("The car " + this.name + " jammed on crossroad " + currentRoad.getName());
             } else {
                 passingRoadTime += SPEED;
-                System.out.println("Машина с названием " + this.name + " едет по дороге " + currentRoad.getName());
+                System.out.println("The car " + this.name + " driving on the road " + currentRoad.getName());
                 if (passingRoadTime >= currentRoad.getDistance()) {
                     if (currentRoad instanceof CrossRoad)
-                        System.out.println("Машина с названием " + this.name + " проехала перекресток " + currentRoad.getName());
+                        System.out.println("The car " + this.name + " passed the crossroad " + currentRoad.getName());
                     else
-                     System.out.println("Машина с названием " + this.name + " проехала дорогу " + currentRoad.getName());
+                     System.out.println("The car " + this.name + " passed the road " + currentRoad.getName());
                     currentRoad.removeCar(this);
                     if (currentRoad instanceof CrossRoad)
                         currentRoad = currentRoad.getNextRoads().get((int) (Math.random() * currentRoad.getNextRoads().size()));
@@ -64,13 +48,13 @@ public class Car  implements Observer{
                 currentRoad.addCar(this);
             if (!isLigtIsGreen && currentRoad instanceof CrossRoad) {
                 timeWhenCarDontMove += 1;
-                System.out.println("Машина с названием " + this.name + " стоит на перекрестке " + currentRoad.getName());
+                System.out.println("The car " + this.name + " jammed on crossroad " + currentRoad.getName());
             } else {
                 if (currentRoad.getCars().size() > 1 && currentRoad.getCars().indexOf(this) != 0) {
                     Car anotherCar = currentRoad.getCars().get(currentRoad.getCars().indexOf(this) - 1);
                     if (currentRoad.getCars().get(currentRoad.getCars().indexOf(this)).SPEED > currentRoad.getCars().get(currentRoad.getCars().indexOf(anotherCar)).SPEED) {
                         if (passingRoadTime + SPEED >= anotherCar.passingRoadTime + anotherCar.SPEED || (anotherCar.passingRoadTime + anotherCar.SPEED) >= currentRoad.getDistance() ) {
-                            System.out.println("Машина " + this.name + " пытается перегнать " + anotherCar.name + " на дороге " + currentRoad.name);
+                            System.out.println("The car " + this.name + " tries to overtaking " + anotherCar.name + " on the road " + currentRoad.name);
 
                             if (anotherCar.SPEED < SPEED - anotherCar.SPEED) {
                                 passingRoadTime += passingRoadTime + SPEED - (anotherCar.passingRoadTime + anotherCar.SPEED) - 1;
@@ -90,12 +74,12 @@ public class Car  implements Observer{
                 else {
                     passingRoadTime += SPEED;
                 }
-                System.out.println("Машина с названием " + this.name + " едет по дороге " + currentRoad.getName());
+                System.out.println("The car " + this.name + " driving on the road " + currentRoad.getName());
                 if (passingRoadTime >= currentRoad.getDistance()) {
                     if (currentRoad instanceof CrossRoad)
-                        System.out.println("Машина с названием " + this.name + " проехала перекресток " + currentRoad.getName());
+                        System.out.println("The car " + this.name + " passed the crossroad " + currentRoad.getName());
                     else
-                        System.out.println("Машина с названием " + this.name + " проехала дорогу " + currentRoad.getName());
+                        System.out.println("The car " + this.name + " passed the road " + currentRoad.getName());
                     currentRoad.removeCar(this);
                     if (currentRoad instanceof CrossRoad)
                         currentRoad = currentRoad.getNextRoads().get((int) (Math.random() * currentRoad.getNextRoads().size()));
@@ -111,27 +95,38 @@ public class Car  implements Observer{
     }
 
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings("all")
     public void startCarMooving(long timeOfExecutingInSeconds){
         long currentTimeMillis = System.currentTimeMillis();
-        Thread run = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(true){
-                    try {
-                        carMooving();
-                        Thread.sleep(100); //1000 - 1 сек
+        Thread run = new Thread(() -> {
+            while(true){
+                try {
+                    carMooving();
+                    Thread.sleep(100); //1000 - 1 сек
 
-                    }
-                    catch (InterruptedException ex) {
-                    }
-                  if (currentTimeMillis + timeOfExecutingInSeconds * 1000 <= System.currentTimeMillis())
-                      Thread.currentThread().stop();
                 }
+                catch (InterruptedException ex) {
+                }
+              if (currentTimeMillis + timeOfExecutingInSeconds * 1000 <= System.currentTimeMillis())
+                  Thread.currentThread().stop();
             }
         });
         run.start();
 
 
     }
+    public int getTimeWhenCarDontMove() {
+        return timeWhenCarDontMove;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+
+    @Override
+    public void update(boolean isLigtIsGreen) {
+        this.isLigtIsGreen = isLigtIsGreen;
+    }
+
 }

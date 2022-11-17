@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 public class CrossRoad extends AbstractRoad{
 
-    protected ArrayList<AbstractRoad> nextRoads = new ArrayList<>(3);
+
+
 public  CrossRoad(String name) {
         this.name = name;
 }
@@ -17,8 +18,8 @@ public  CrossRoad(String name) {
      }
  }
 
-
-    public void setNextRoads(AbstractRoad nextRoad) {
+@Override
+    public void setNextRoad(AbstractRoad nextRoad) {
        super.nextRoads.add(nextRoad);
        nextRoad.lastRoad = this;
 

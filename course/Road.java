@@ -1,6 +1,5 @@
 package OOP.course;
 
-import java.util.ArrayList;
 
 public class Road extends AbstractRoad{
 
@@ -28,7 +27,7 @@ public class Road extends AbstractRoad{
         super.distance = distance;
         this.lastRoad = lastRoad;
         lastRoad.nextRoad = this;
-        this.nextRoad = nextRoad;
+        setNextRoad(nextRoad);
         this.name = name;
         if (isDirectionTrue(lastRoad, direction)){
             this.direction = direction;
@@ -37,6 +36,13 @@ public class Road extends AbstractRoad{
             incorrectDirection.getCause();
         }
 
+    }
+
+    @Override
+    public void setNextRoad(AbstractRoad nextRoad) {
+        if (nextRoad instanceof CrossRoad || isDirectionTrue(this,nextRoad.direction))
+            this.nextRoad = nextRoad;
+        else incorrectDirection.addSuppressed(incorrectDirection);
     }
 
 }

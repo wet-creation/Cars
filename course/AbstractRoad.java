@@ -3,9 +3,8 @@ package OOP.course;
 
 import java.util.ArrayList;
 
-public class AbstractRoad {
+public abstract class AbstractRoad {
     protected int distance = 5;
-
     protected boolean hasCrossRoads;
     protected String name;
     protected AbstractRoad nextRoad;
@@ -23,6 +22,7 @@ public class AbstractRoad {
         UP,
         DOWN
     }
+
 
    protected boolean isDirectionTrue(AbstractRoad lastRoad, Direction direction){
         if (lastRoad.direction.equals(Direction.UP) && direction.equals(Direction.DOWN))
@@ -55,7 +55,7 @@ public class AbstractRoad {
     }
 
 
-    public boolean isHasCar() {
+    public boolean hasCar() {
         return !cars.isEmpty();
     }
 
@@ -69,10 +69,7 @@ public class AbstractRoad {
         return cars;
     }
 
-    public void setNextRoad(AbstractRoad nextRoad) {
-
-        this.nextRoad = nextRoad;
-    }
+    public abstract void setNextRoad(AbstractRoad nextRoad);
 
     public void setName(String name) {
         this.name = name;

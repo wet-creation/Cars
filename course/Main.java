@@ -16,17 +16,19 @@ public class Main {
         CrossRoad crossRoad1 = new CrossRoad("cross1");
         CrossRoad crossRoad2 = new CrossRoad("cross2");
         r1.setNextRoad(crossRoad1);
-        crossRoad1.setNextRoads(r3);
-        crossRoad1.setNextRoads(r2);
+        crossRoad1.setNextRoad(r3);
+        crossRoad1.setNextRoad(r2);
         r2.setNextRoad(r4);
         r4.setNextRoad(r5);
         r5.setNextRoad(crossRoad2);
         r3.setNextRoad(crossRoad2);
-        crossRoad2.setNextRoads(r6);
+        crossRoad2.setNextRoad(r6);
         r6.setNextRoad(r7);
         r7.setNextRoad(r1);
 
-        TrafficLight trafficLight = TrafficLight.createOrGetTrafficLight(1000);
+
+
+        TrafficLight trafficLight = TrafficLight.createOrGetTrafficLight(1);
 
 
         Car car1 = new Car(6, r7, trafficLight,"car1");
@@ -35,9 +37,9 @@ public class Main {
         Car car4 = new Car(7, r2, trafficLight,"car4");
         Car car5 = new Car(2, r4, trafficLight,"car5");
 
-        long time = 20;
+        long time = 10;
 
-        trafficLight.startChangingColor(time);
+       trafficLight.startChangingColor(time);
        car1.startCarMooving(time);
        car2.startCarMooving(time);
        car3.startCarMooving(time);
