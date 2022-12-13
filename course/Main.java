@@ -37,8 +37,7 @@ public class Main {
         Car car4 = new Car(7, r2, trafficLight,"car4");
         Car car5 = new Car(2, r4, trafficLight,"car5");
 
-        long time = 10;
-
+        long time = 3;
        trafficLight.startChangingColor(time);
        car1.startCarMooving(time);
        car2.startCarMooving(time);
